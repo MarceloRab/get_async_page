@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_async_page/get_async_page.dart';
@@ -35,6 +36,7 @@ abstract class Routes {
   static const PAGE_1 = '/page_1';
   static const PAGE_2 = '/page_2';
   static const PAGE_3 = '/page_3';
+  static const PAGE_4 = '/page_4';
 }
 
 class AppPages {
@@ -54,8 +56,9 @@ class AppPages {
     /// ✅ Boot your controller into a StatefulWidget.
     ///-------------------------------------------------------------------
     GetPage(name: Routes.PAGE_2, page: () => TestGetStreamPageStateful()),
+    GetPage(name: Routes.PAGE_3, page: () => TestePaginationPage()),
     GetPage(
-        name: Routes.PAGE_3,
+        name: Routes.PAGE_4,
         page: () {
           changeAuth();
           return TestGetStreamWidget();
@@ -167,6 +170,107 @@ class TestGetStreamPage extends StatelessWidget {
     //throw Exception('Erro voluntario');
     yield dataListPerson3;
   })();
+}
+
+class TestePaginationPage extends StatefulWidget {
+  @override
+  _TestePaginationPageState createState() => _TestePaginationPageState();
+}
+
+class _TestePaginationPageState extends State<TestePaginationPage> {
+  Dio _dio;
+
+  Future<List<Person>> _futureList(int page) async {
+    final response =
+        await _dio.get('/users', queryParameters: {'page': page, 'limit': 15});
+
+    return (response.data as List)
+        .map((element) => Person.fromMap(element))
+        .toList();
+  }
+
+  @override
+  void initState() {
+    _dio = Dio(
+        BaseOptions(baseUrl: 'https://5f988a5242706e001695875d.mockapi.io'));
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 4), () {
+      ///------------------------------------------
+      /// Test to check the reactivity of the screen.
+      ///------------------------------------------
+
+      if (!Get.find<Test2Controller>().isAuth) {
+        Get.find<Test2Controller>().changeAuth = true;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    Get.find<Test2Controller>().changeAuth = false;
+    Get.find<Test2Controller>().rxList.clear();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetPaginationPage<Person>(
+      title: Text(
+        'Stream Page',
+        style: TextStyle(fontSize: 18),
+      ),
+      futureFetchPageItems: _futureList,
+
+      ///--------------------------------------------
+      /// ✅ Add RxBool auth and build the widget if it is false.
+      ///---------------------------------------------
+      rxBoolAuth: RxBoolAuth.input(
+          rxBoolAuthm: Get.find<Test2Controller>().rxAuth,
+          authFalseWidget: () => Center(
+                child: Text(
+                  'Please login.',
+                  style: TextStyle(fontSize: 22),
+                ),
+              )),
+      obxWidgetItemBuilder: (context, index, objectIndex) {
+        ///------------------------------------------
+        /// Build your body from the future data.
+        ///------------------------------------------
+
+        return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: ListTile(
+                contentPadding: EdgeInsets.symmetric(vertical: 10),
+                title: Container(
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withAlpha(50),
+                    image: DecorationImage(
+                      fit: BoxFit.fitWidth,
+                      image: NetworkImage(
+                        '${objectIndex.avatar}',
+                      ),
+                    ),
+                  ),
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '${objectIndex.name}',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ));
+      },
+    );
+  }
 }
 
 class TestGetStreamPageStateful extends StatefulWidget {
@@ -336,6 +440,20 @@ class HomePage extends StatelessWidget {
                 child: Text(
                   'Go to the GetStreamPage with '
                   'reactive variables by controllers.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                )),
+            const SizedBox(
+              height: 20,
+            ),
+            InkWell(
+                focusColor: Colors.grey,
+                splashColor: Colors.blue,
+                onTap: () {
+                  Get.toNamed(Routes.PAGE_3);
+                },
+                child: Text(
+                  'Go to the GetPaginationPage',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20),
                 )),
@@ -521,8 +639,37 @@ class Person {
   final String name;
 
   final int age;
+  final String id;
+  final String avatar;
+  final String username;
 
-  Person({this.name, this.age});
+  Person({
+    this.name,
+    this.age,
+    this.id,
+    this.avatar,
+    this.username,
+  });
+
+  factory Person.fromMap(Map<String, dynamic> map) {
+    return new Person(
+      name: map['name'] as String,
+      age: map['age'] as int ?? 0,
+      id: map['id'] as String,
+      avatar: map['avatar'] as String,
+      username: map['username'] as String,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': this.name,
+      'age': this.age,
+      'id': this.id,
+      'avatar': this.avatar,
+      'username': this.username,
+    };
+  }
 
   @override
   String toString() {

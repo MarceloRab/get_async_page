@@ -7,7 +7,7 @@ import 'package:get_async_page/src/ui/utils/functions.dart';
 import 'infra/rx_get_type.dart';
 
 class GetStreamWidget<T> extends StatefulWidget {
-  ///[stream] Just pass your stream and you will receive [streamObject] which is
+  ///[stream] Just pass your stream and you will receive streamObject which is
   ///snapshot.data to build your page.
   final Stream<T> stream;
 
@@ -19,19 +19,14 @@ class GetStreamWidget<T> extends StatefulWidget {
   /// [stream] error.
   final WidgetsErrorBuilder widgetErrorBuilder;
 
-  ///[obxWidgetBuilder] This function is launched every time we receive
-  ///snapshot.data through the stream. To set up your page you receive
-  ///the context, the [streamObject] which is snapshot.data and an [RxGetSet]
-  ///object to harvest the reactive variable by the tag. You can present
-  ///something if the user is not logged in, for example.
+  /// [obxWidgetBuilder] This function starts every time we receive
+  ///snapshot.data through the stream. To set up your page, you receive
+  /// the context, the streamObject which is snapshot.data.
   final GetWidgetBuilder<T> obxWidgetBuilder;
 
   /// Start showing [widgetWaiting] until it shows the first data
   final Widget widgetWaiting;
 
-  /// [initialData] List to be filtered by Search.
-  /// These widgets will not be displayed. [widgetOffConnectyWaiting] and
-  /// [widgetWaiting]
   final T initialData;
 
   const GetStreamWidget(

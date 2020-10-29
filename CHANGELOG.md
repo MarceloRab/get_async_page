@@ -1,3 +1,6 @@
-## [0.0.1] - TODO: Add release date.
+## [0.1.0]
+* Improvement in semantics and readme.
 
-* TODO: Describe initial release.
+## [0.0.1]
+
+* initial version.

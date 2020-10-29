@@ -15,7 +15,7 @@ class GetStreamPage<T> extends StatefulWidget {
   /// status to have reactivity.
   final RxBoolAuth rxBoolAuth;
 
-  ///[stream] Just pass your stream and you will receive [streamObject] which is
+  ///[stream] Just pass your stream and you will receive streamObject which is
   ///snapshot.data to build your page.
   final Stream<T> stream;
 
@@ -25,11 +25,9 @@ class GetStreamPage<T> extends StatefulWidget {
   /// [stream] error.
   final WidgetsErrorBuilder widgetErrorBuilder;
 
-  ///[obxWidgetBuilder] This function is launched every time we receive
-  ///snapshot.data through the stream. To set up your page you receive
-  ///the context, the [streamObject] which is snapshot.data and an [RxGetSet]
-  ///object to harvest the reactive variable by the tag. You can present
-  ///something if the user is not logged in, for example.
+  /// [obxWidgetBuilder] This function starts every time we receive
+  ///snapshot.data through the stream. To set up your page, you receive
+  /// the context, the streamObject which is snapshot.data.
   final GetWidgetBuilder<T> obxWidgetBuilder;
 
   /// [widgetOffConnectyWaiting] Only shows something when it is disconnected
@@ -88,6 +86,7 @@ class GetStreamPage<T> extends StatefulWidget {
       {Key key,
       @required this.stream,
       @required this.obxWidgetBuilder,
+      this.initialData,
       this.rxBoolAuth,
       this.widgetErrorBuilder,
       this.widgetWaiting,
@@ -119,8 +118,7 @@ class GetStreamPage<T> extends StatefulWidget {
       this.widgetOffConnectyWaiting,
       this.iconConnectyOffAppBar,
       this.hideDefaultConnectyIconOffAppBar = false,
-      this.iconConnectyOffAppBarColor,
-      this.initialData})
+      this.iconConnectyOffAppBarColor})
       //: assert(S is List<DisposableInterface>),
       : super(key: key);
 

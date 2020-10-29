@@ -10,7 +10,7 @@ import 'package:get_async_page/src/controller/get_pagination_controller.dart';
 import 'package:get_async_page/src/ui/widgets/connecty_widget.dart';
 
 class GetPaginationPage<T> extends StatefulWidget {
-  /// [initialData] List to be filtered by Search.
+  /// [initialData] List to be initialData.
   /// These widgets will not be displayed. [widgetOffConnectyWaiting] and
   /// [widgetWaiting]
   final List<T> initialData;
@@ -26,21 +26,25 @@ class GetPaginationPage<T> extends StatefulWidget {
   final int numItemsPage;
 
   /// [widgetErrorBuilder] Widget built by the Object error returned by the
-  /// [stream] error.
+  /// [futureFetchPageItems] error.
   final WidgetsErrorBuilder widgetErrorBuilder;
 
-  /// [paginationItemBuilder] Returns Widget from the object (<T>).
+  /// [obxWidgetItemBuilder] Returns Widget from the object (<T>).
   /// This comes from the List <T> index.
   /// typedef WidgetsPaginationItemBuilder<T> = Widget Function(
   ///BuildContext context, int index, T objectIndex);
-  /// final WidgetsPaginationItemBuilder<T> paginationItemBuilder;
-  final WidgetsPaginationItemBuilder<T> paginationItemBuilder;
+
+  final WidgetsPaginationItemBuilder<T> obxWidgetItemBuilder;
 
   /// [widgetOffConnectyWaiting] Only shows something when it is disconnected
   /// and still doesn't have the first value in the stream. If the connection
   /// comes back starts showing [widgetWaiting] until it shows the first data
   final Widget widgetWaiting;
   final Widget widgetOffConnectyWaiting;
+
+  /// [widgetEndScrollPage] shown when the end of the page arrives and
+  /// awaits the Future of the data on the next page
+  final Widget widgetEndScrollPage;
 
   /// [floatingActionButton] , [pageDrawer] ,
   /// [floatingActionButtonLocation] ,
@@ -94,10 +98,10 @@ class GetPaginationPage<T> extends StatefulWidget {
 
   const GetPaginationPage(
       {Key key,
+      @required this.futureFetchPageItems,
+      @required this.obxWidgetItemBuilder,
       this.numItemsPage,
-      this.futureFetchPageItems,
       this.widgetErrorBuilder,
-      this.paginationItemBuilder,
       this.widgetWaiting,
       this.widgetOffConnectyWaiting,
       this.floatingActionButton,
@@ -129,7 +133,8 @@ class GetPaginationPage<T> extends StatefulWidget {
       this.hideDefaultConnectyIconOffAppBar = false,
       this.initialData,
       this.rxBoolAuth,
-      this.iconConnectyOffAppBarColor})
+      this.iconConnectyOffAppBarColor,
+      this.widgetEndScrollPage})
       : super(key: key);
 
   @override
@@ -223,8 +228,11 @@ class _GetPaginationPageState<T> extends State<GetPaginationPage<T>> {
           }
           if (widget.initialData.length > _controller.listFull.length) {
             _unsubscribeListFullCallBack();
-            _controller.page =
-                (widget.initialData.length / widget.numItemsPage).ceil();
+            if (_controller.numItemsPage != 0) {
+              _controller.page =
+                  (widget.initialData.length / widget.numItemsPage).ceil();
+            }
+
             _controller.listFull.clear();
             _controller.listFull.addAll(widget.initialData);
             _controller.withData(_controller.listFull);
@@ -368,7 +376,7 @@ class _GetPaginationPageState<T> extends State<GetPaginationPage<T>> {
             return _widgetEndScrollPage;
           }
 
-          return widget.paginationItemBuilder(
+          return widget.obxWidgetItemBuilder(
               context, index, _controller.data[index]);
         },
       );
@@ -523,6 +531,19 @@ class _GetPaginationPageState<T> extends State<GetPaginationPage<T>> {
       );
     } else {
       _widgetWaiting = widget.widgetWaiting;
+    }
+
+    if (widget.widgetEndScrollPage == null) {
+      _widgetEndScrollPage = Center(
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 20, top: 10),
+          width: 30,
+          height: 30,
+          child: const CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      _widgetEndScrollPage = widget.widgetEndScrollPage;
     }
   }
 }

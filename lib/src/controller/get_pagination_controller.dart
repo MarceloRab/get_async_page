@@ -46,7 +46,7 @@ class GetPaginationController<T> implements PaginationBase<T> {
         //return;
       }
       finishPage = true;
-    } else if (data.length < 15 && numItemsPage == 0) {
+    } else if (listData.length < 15 && numItemsPage == 0) {
       oneMoreListFullPage = false;
 
       withError(Exception(
