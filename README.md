@@ -4,6 +4,10 @@ A reactive page on GetX in a super simple way from your stream or future to pagn
 
 ## Introduction
 
+* This package has been depreciated. It has been merged into the package
+  [search_app_bar_page](https://pub.dev/packages/search_app_bar_page). There are other features in 
+  this and it is being transferred to null-safety.
+
 Would you like to have a reactive page with just your stream or a pagination only with its function of collecting the page? Built with GetX, this widget offers
 this facility. You can also add reactive parameters to rebuild your body. Like a change in authentication.
 Errors, connectivity and standby widgets are configured in standard mode. Change them if desired.

@@ -1,17 +1,17 @@
 name: get_async_page
 description: A reactive page on GetX in a super simple way from your stream or future to pagnination.
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/MarceloRab/get_async_page
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.17.0 <2.0.0"
+
 
 
 dependencies:
   flutter:
     sdk: flutter
-  connectivity: ">=0.4.9+5 <5.0.0"
+  connectivity: ">=3.0.2 <4.0.0"
   get: ">=3.13.2 <4.0.0"
 
 dev_dependencies:

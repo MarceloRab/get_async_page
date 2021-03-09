@@ -59,7 +59,7 @@ class GetPaginationPage<T> extends StatefulWidget {
   final Widget pageBottomNavigationBar;
   final Widget pageBottomSheet;
   final Color pageBackgroundColor;
-  final bool resizeToAvoidBottomPadding;
+  //final bool resizeToAvoidBottomPadding;
   final bool resizeToAvoidBottomInset;
   final bool primary;
   final DragStartBehavior drawerDragStartBehavior;
@@ -113,7 +113,7 @@ class GetPaginationPage<T> extends StatefulWidget {
       this.pageBottomNavigationBar,
       this.pageBottomSheet,
       this.pageBackgroundColor,
-      this.resizeToAvoidBottomPadding,
+      //this.resizeToAvoidBottomPadding,
       this.resizeToAvoidBottomInset,
       this.primary = true,
       this.drawerDragStartBehavior = DragStartBehavior.start,
@@ -346,7 +346,7 @@ class _GetPaginationPageState<T> extends State<GetPaginationPage<T>> {
 
   Widget buildBody() {
     if (downConnectyWithoutData) {
-      // Apenas anuncia quando nao tem a primeira data e esta sem conexao
+      /// Apenas anuncia quando nao tem a primeira data e esta sem conexao
       return _widgetConnecty;
     }
 
@@ -397,7 +397,7 @@ class _GetPaginationPageState<T> extends State<GetPaginationPage<T>> {
         bottomNavigationBar: widget.pageBottomNavigationBar,
         bottomSheet: widget.pageBottomSheet,
         backgroundColor: widget.pageBackgroundColor,
-        resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
+        //resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
         primary: widget.primary,
         drawerDragStartBehavior: widget.drawerDragStartBehavior,
@@ -458,8 +458,6 @@ class _GetPaginationPageState<T> extends State<GetPaginationPage<T>> {
     } else {
       return widget.widgetErrorBuilder(error);
     }
-
-    //return _widgetError;
   }
 
   Widget buildWidgetError(Object error) {
@@ -486,8 +484,6 @@ class _GetPaginationPageState<T> extends State<GetPaginationPage<T>> {
     } else {
       return widget.widgetErrorBuilder(error);
     }
-
-    //return _widgetError;
   }
 
   void _buildWidgetsDefault() {

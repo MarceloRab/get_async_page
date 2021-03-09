@@ -49,7 +49,8 @@ class GetStreamPage<T> extends StatefulWidget {
   final Widget pageBottomNavigationBar;
   final Widget pageBottomSheet;
   final Color pageBackgroundColor;
-  final bool resizeToAvoidBottomPadding;
+
+  //final bool resizeToAvoidBottomPadding;
   final bool resizeToAvoidBottomInset;
   final bool primary;
   final DragStartBehavior drawerDragStartBehavior;
@@ -61,7 +62,7 @@ class GetStreamPage<T> extends StatefulWidget {
   final bool endDrawerEnableOpenDragGesture;
 
   ///AppBar parameters
-  ///
+
   final Color appBarbackgroundColor;
   final Widget title;
   final bool centerTitle;
@@ -99,7 +100,7 @@ class GetStreamPage<T> extends StatefulWidget {
       this.pageBottomNavigationBar,
       this.pageBottomSheet,
       this.pageBackgroundColor,
-      this.resizeToAvoidBottomPadding,
+      //this.resizeToAvoidBottomPadding,
       this.resizeToAvoidBottomInset,
       this.primary = true,
       this.drawerDragStartBehavior = DragStartBehavior.start,
@@ -139,8 +140,6 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
 
   StreamSubscription _subscriptionConnecty;
   ConnectController _connectyController;
-
-  //T objesctStream;
 
   bool haveData = false;
 
@@ -285,7 +284,7 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
         return widget.rxBoolAuth.authFalseWidget();
       }
       if (downConnectyWithoutData) {
-        // Apenas anuncia quando nao tem a primeira data e esta sem conexao
+        /// Apenas anuncia quando nao tem a primeira data e esta sem conexao
         return _widgetConnecty;
       }
 
@@ -297,10 +296,7 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
         return buildWidgetError(_controller.snapshot.error);
       }
 
-      return widget.obxWidgetBuilder(
-          //context, _controller.snapshot.data, widget.listRx);
-          context,
-          _controller.snapshot.data);
+      return widget.obxWidgetBuilder(context, _controller.snapshot.data);
     });
   }
 
@@ -318,7 +314,7 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
         bottomNavigationBar: widget.pageBottomNavigationBar,
         bottomSheet: widget.pageBottomSheet,
         backgroundColor: widget.pageBackgroundColor,
-        resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
+        // resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
         primary: widget.primary,
         drawerDragStartBehavior: widget.drawerDragStartBehavior,
@@ -354,8 +350,6 @@ class _GetStreamPageState<T> extends State<GetStreamPage<T>> {
     } else {
       return widget.widgetErrorBuilder(error);
     }
-
-    //return _widgetError;
   }
 
   void _buildWidgetsDefault() {

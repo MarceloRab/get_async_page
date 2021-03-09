@@ -127,10 +127,7 @@ class _GetStreamWidgetState<T> extends State<GetStreamWidget<T>> {
         return buildWidgetError(_controller.snapshot.error);
       }
 
-      return widget.obxWidgetBuilder(
-          //context, _controller.snapshot.data, widget.listRx);
-          context,
-          _controller.snapshot.data);
+      return widget.obxWidgetBuilder(context, _controller.snapshot.data);
     });
   }
 

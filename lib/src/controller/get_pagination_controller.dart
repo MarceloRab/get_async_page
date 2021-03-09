@@ -91,8 +91,6 @@ class GetPaginationController<T> implements PaginationBase<T> {
       withData(listFull);
     } else
       withError(Exception('It cannot return null. 😢'));
-    //snapshotScroolPage =
-    //snapshotScroolPage.withError(Exception('It cannot return null. 😢'));
   }
 
   void refazFutureListFull() {
